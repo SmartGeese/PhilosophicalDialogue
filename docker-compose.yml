@@ -1,0 +1,65 @@
+services:
+  base:
+    build:
+      context: ./docker/base
+      tags:
+        - "ollama_app:base"
+    image: ollama_app:base
+    
+  jupyter:
+    build:
+      context: ./docker/jupyter
+      tags:
+        - "ollama_jupyter:latest"
+    init: true
+    image: ollama_jupyter:latest
+    ports:
+      - "18888:8888" # Jupyter
+    volumes:
+      - .:/llama_kattis
+    expose:
+      - "8888"
+    hostname: jupyter
+    container_name: jupyter
+    networks:
+      - ollama_net
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]
+              count: all
+    volumes:
+      - //e/data/ollama_models:/root/.ollama
+    ports:
+      - "11434:11434"
+    environment:
+      OLLAMA_RUN_TIMEOUT: 600
+      OLLAMA_REQUEST_TIMEOUT: 600
+      OLLAMA_LOAD_TIMEOUT: 600
+    networks:
+      - ollama_net
+  # Launch this if there is no GPU or if you are running on Mac
+  ollama-cpu:
+    container_name: ollama
+    image: ollama/ollama
+    volumes:
+      - ../ollama_models:/root/.ollama
+    ports:
+      - "11434:11434"
+    environment:
+      OLLAMA_RUN_TIMEOUT: 600
+      OLLAMA_REQUEST_TIMEOUT: 600
+      OLLAMA_LOAD_TIMEOUT: 600
+    networks:
+      - ollama_net
+
+networks:
+  ollama_net:
+    name: ollama_net
+    driver: bridge
