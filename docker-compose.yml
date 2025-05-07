@@ -16,7 +16,7 @@ services:
     ports:
       - "18888:8888" # Jupyter
     volumes:
-      - .:/llama_kattis
+      - .:/workspace
     expose:
       - "8888"
     hostname: jupyter
