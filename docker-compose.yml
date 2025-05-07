@@ -28,7 +28,7 @@ services:
     container_name: ollama
     image: ollama/ollama
     volumes:
-      - //e/data/ollama_models:/root/.ollama
+      - ../../ollama_models:/root/.ollama
     ports:
       - "11434:11434"
     environment:
@@ -42,7 +42,7 @@ services:
     container_name: ollama
     image: ollama/ollama
     volumes:
-      - ../ollama_models:/root/.ollama
+      - ../../ollama_models:/root/.ollama
     ports:
       - "11434:11434"
     environment:
