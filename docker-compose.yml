@@ -25,7 +25,7 @@ services:
       - ollama_net
 
   ollama-a:
-    container_name: ollama
+    container_name: ollama-a
     image: ollama/ollama
     volumes:
       - ../../ollama_models:/root/.ollama
@@ -39,7 +39,7 @@ services:
       - ollama_net
 
   ollama-b:
-    container_name: ollama
+    container_name: ollama-b
     image: ollama/ollama
     volumes:
       - ../../ollama_models:/root/.ollama
